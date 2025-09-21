@@ -1,0 +1,1420 @@
+{
+	"info": {
+		"_postman_id": "heal-diagnostic-final-2025",
+		"name": "HEAL Diagnostic API - Final Collection",
+		"description": "Complete API collection for HEAL Diagnostic Center with all working endpoints and correct payloads",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "heal-diagnostic-final"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"accessToken\", jsonData.data.tokens.accessToken);",
+									"    pm.environment.set(\"refreshToken\", jsonData.data.tokens.refreshToken);",
+									"    pm.environment.set(\"userId\", jsonData.data.user.userId);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"admin\",\n  \"password\": \"cSUc5E9J*2u0\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/profile",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "profile"]
+						}
+					}
+				},
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/health",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "health"]
+						}
+					}
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"currentPassword\": \"cSUc5E9J*2u0\",\n  \"newPassword\": \"newPassword123\",\n  \"confirmPassword\": \"newPassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/change-password",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "change-password"]
+						}
+					}
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/refresh",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "refresh"]
+						}
+					}
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/logout",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "logout"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Admin Management",
+			"item": [
+				{
+					"name": "Branches",
+					"item": [
+						{
+							"name": "Create Branch",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"New Branch\",\n  \"address\": \"123 Medical Street\",\n  \"contact\": \"+91-9876543210\",\n  \"email\": \"branch@healdiagnostic.com\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/branches",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "admin", "branches"]
+								}
+							}
+						},
+						{
+							"name": "Get Branches",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/branches",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "admin", "branches"]
+								}
+							}
+						},
+						{
+							"name": "Update Branch",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Updated Branch Name\",\n  \"address\": \"456 Updated Street\",\n  \"contact\": \"+91-9876543211\",\n  \"email\": \"updated@healdiagnostic.com\",\n  \"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/branches/{{branchObjectId}}",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "admin", "branches", "{{branchObjectId}}"]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "Create User",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"newuser123\",\n  \"name\": \"New User\",\n  \"email\": \"newuser@healdiagnostic.com\",\n  \"phone\": \"+91-1234567890\",\n  \"role\": \"LAB_STAFF\",\n  \"branchId\": \"{{branchId}}\",\n  \"accessLevel\": [\"SAMPLE_COLLECTION\", \"TEST_PROCESSING\"]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/users",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "admin", "users"]
+								}
+							}
+						},
+						{
+							"name": "Get Users",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/users?page=1&limit=10",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "admin", "users"],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								}
+							}
+						},
+						{
+							"name": "Update User",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Updated User Name\",\n  \"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/users/{{userObjectId}}",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "admin", "users", "{{userObjectId}}"]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Doctors",
+					"item": [
+						{
+							"name": "Create Doctor",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Dr. New Doctor\",\n  \"specialization\": \"Cardiology\",\n  \"contact\": \"+91-9999888777\",\n  \"email\": \"doctor@test.com\",\n  \"consultationFee\": 800,\n  \"commissionRate\": 20,\n  \"availableBranches\": [\"{{branchObjectId}}\"]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/doctors",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "admin", "doctors"]
+								}
+							}
+						},
+						{
+							"name": "Get Doctors",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/doctors",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "admin", "doctors"]
+								}
+							}
+						},
+						{
+							"name": "Update Doctor",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Dr. Updated Doctor\",\n  \"specialization\": \"Cardiology\",\n  \"contact\": \"+91-9999888777\",\n  \"email\": \"updated@test.com\",\n  \"consultationFee\": 900,\n  \"commissionRate\": 20,\n  \"availableBranches\": [\"{{branchObjectId}}\"]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/doctors/{{doctorObjectId}}",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "admin", "doctors", "{{doctorObjectId}}"]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Tests",
+					"item": [
+						{
+							"name": "Create Test",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"testName\": \"Blood Sugar Test\",\n  \"category\": \"PATHOLOGY\",\n  \"price\": 150,\n  \"commissionRate\": 15,\n  \"availableBranches\": [\"{{branchId}}\"]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/tests",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "admin", "tests"]
+								}
+							}
+						},
+						{
+							"name": "Get Tests",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/tests",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "admin", "tests"]
+								}
+							}
+						},
+						{
+							"name": "Update Test",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"testName\": \"Blood Sugar Test Updated\",\n  \"category\": \"PATHOLOGY\",\n  \"price\": 180,\n  \"commissionRate\": 15,\n  \"availableBranches\": [\"{{branchId}}\"]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/admin/tests/{{testObjectId}}",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "admin", "tests", "{{testObjectId}}"]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Dashboard",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/dashboard",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "admin", "dashboard"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "OPD Management",
+			"item": [
+				{
+					"name": "Patients",
+					"item": [
+						{
+							"name": "Register Patient",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"John Doe\",\n  \"age\": 35,\n  \"dob\": \"1989-05-15\",\n  \"gender\": \"Male\",\n  \"contact\": \"+91-9876543210\",\n  \"address\": \"123 Patient Street, City\",\n  \"branchId\": \"{{branchId}}\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/opd/patients",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "opd", "patients"]
+								}
+							}
+						},
+						{
+							"name": "Get Patients",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/opd/patients?page=1&limit=10",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "opd", "patients"],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								}
+							}
+						},
+						{
+							"name": "Get Patient Details",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/opd/patients/{{patientObjectId}}",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "opd", "patients", "{{patientObjectId}}"]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Visits",
+					"item": [
+						{
+							"name": "Create Visit",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"patientId\": \"{{patientId}}\",\n  \"doctorId\": \"{{doctorObjectId}}\",\n  \"visitType\": \"CONSULTATION\",\n  \"consultationFee\": 600,\n  \"paymentMode\": \"CASH\",\n  \"branchId\": \"{{branchObjectId}}\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/opd/visits",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "opd", "visits"]
+								}
+							}
+						},
+						{
+							"name": "Update Visit",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"paymentStatus\": \"PAID\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/opd/visits/{{visitObjectId}}",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "opd", "visits", "{{visitObjectId}}"]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Test Orders",
+					"item": [
+						{
+							"name": "Create Test Order",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"patientId\": \"{{patientId}}\",\n  \"visitId\": \"{{visitObjectId}}\",\n  \"referringDoctorId\": \"{{doctorObjectId}}\",\n  \"tests\": [\n    {\n      \"testId\": \"{{testObjectId}}\",\n      \"testName\": \"Complete Blood Count (CBC)\",\n      \"price\": 300\n    }\n  ],\n  \"paymentMode\": \"CASH\",\n  \"branchId\": \"{{branchObjectId}}\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/opd/test-orders",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "opd", "test-orders"]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Prescriptions",
+					"item": [
+						{
+							"name": "Create Prescription",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"visitId\": \"{{visitObjectId}}\",\n  \"vitals\": {\n    \"height\": 170,\n    \"weight\": 70,\n    \"bp\": \"120/80\",\n    \"temperature\": 98.6,\n    \"spo2\": 98\n  },\n  \"examination\": {\n    \"complaints\": \"Fever and headache\",\n    \"findings\": \"No abnormal findings\",\n    \"diagnosis\": \"Common Cold\"\n  },\n  \"diagnosis\": \"Common Cold\",\n  \"medications\": [\n    {\n      \"name\": \"Paracetamol\",\n      \"dosage\": \"500mg\",\n      \"frequency\": \"Twice daily\",\n      \"duration\": \"5 days\"\n    }\n  ],\n  \"instructions\": \"Rest and drink plenty of fluids\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/opd/prescriptions",
+									"host": ["{{baseUrl}}"],
+									"path": ["api", "opd", "prescriptions"]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Appointments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/opd/appointments",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "opd", "appointments"]
+						}
+					}
+				},
+				{
+					"name": "Available Doctors",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/opd/doctors/available?branchId={{branchObjectId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "opd", "doctors", "available"],
+							"query": [
+								{
+									"key": "branchId",
+									"value": "{{branchObjectId}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Available Tests",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/opd/tests/available?branchId={{branchObjectId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "opd", "tests", "available"],
+							"query": [
+								{
+									"key": "branchId",
+									"value": "{{branchObjectId}}"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Lab Management",
+			"item": [
+				{
+					"name": "Test Queue",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/lab/test-queue",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "lab", "test-queue"]
+						}
+					}
+				},
+				{
+					"name": "Update Test Status",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"testId\": \"{{testObjectId}}\",\n  \"status\": \"COLLECTED\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/lab/tests/{{orderObjectId}}/status",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "lab", "tests", "{{orderObjectId}}", "status"]
+						}
+					}
+				},
+				{
+					"name": "Pending Collections",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/lab/collections/pending",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "lab", "collections", "pending"]
+						}
+					}
+				},
+				{
+					"name": "Update Collection",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"testId\": \"{{testObjectId}}\",\n  \"collectionStatus\": \"COLLECTED\",\n  \"collectedBy\": \"Lab Technician\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/lab/collections/{{orderObjectId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "lab", "collections", "{{orderObjectId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Lab Reports",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/lab/reports/{{orderObjectId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "lab", "reports", "{{orderObjectId}}"]
+						}
+					}
+				},
+				{
+					"name": "Download Report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/lab/reports/download/{{reportId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "lab", "reports", "download", "{{reportId}}"]
+						}
+					}
+				},
+				{
+					"name": "Lab Dashboard",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/lab/dashboard",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "lab", "dashboard"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Commission Management",
+			"item": [
+				{
+					"name": "Doctor Commissions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/commissions/doctors?doctorId={{doctorObjectId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "commissions", "doctors"],
+							"query": [
+								{
+									"key": "doctorId",
+									"value": "{{doctorObjectId}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Commission Reports",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/commissions/reports",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "commissions", "reports"]
+						}
+					}
+				},
+				{
+					"name": "Pending Commissions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/commissions/pending/list",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "commissions", "pending", "list"]
+						}
+					}
+				},
+				{
+					"name": "Pay Commission",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"paymentMode\": \"BANK_TRANSFER\",\n  \"transactionRef\": \"TXN123456\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/commissions/{{commissionId}}/pay",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "commissions", "{{commissionId}}", "pay"]
+						}
+					}
+				},
+				{
+					"name": "Bulk Pay Commissions",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"commissionIds\": [\"{{commissionId}}\", \"{{commissionId2}}\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/commissions/bulk-pay",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "commissions", "bulk-pay"]
+						}
+					}
+				},
+				{
+					"name": "Commission Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/commissions/{{commissionId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "commissions", "{{commissionId}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Accounts",
+			"item": [
+				{
+					"name": "Daily Collection",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/accounts/daily-collection?date=2025-09-11",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "accounts", "daily-collection"],
+							"query": [
+								{
+									"key": "date",
+									"value": "2025-09-11"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Payment Summary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/accounts/payment-summary",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "accounts", "payment-summary"]
+						}
+					}
+				},
+				{
+					"name": "Outstanding Amounts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/accounts/outstanding",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "accounts", "outstanding"]
+						}
+					}
+				},
+				{
+					"name": "Revenue Analytics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/accounts/revenue-analytics?period=monthly",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "accounts", "revenue-analytics"],
+							"query": [
+								{
+									"key": "period",
+									"value": "monthly"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Commission Summary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/accounts/commission-summary",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "accounts", "commission-summary"]
+						}
+					}
+				},
+				{
+					"name": "Test Revenue",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/accounts/test-revenue",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "accounts", "test-revenue"]
+						}
+					}
+				},
+				{
+					"name": "Financial Statement",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/accounts/financial-statement?month=9&year=2025",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "accounts", "financial-statement"],
+							"query": [
+								{
+									"key": "month",
+									"value": "9"
+								},
+								{
+									"key": "year",
+									"value": "2025"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Inventory Management",
+			"item": [
+				{
+					"name": "Create Item",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"itemName\": \"Test Tubes\",\n  \"category\": \"LAB_SUPPLY\",\n  \"quantity\": 100,\n  \"minStockLevel\": 20,\n  \"maxStockLevel\": 500,\n  \"unitPrice\": 1.5,\n  \"supplier\": \"Lab Equipment Co\",\n  \"expiryDate\": \"2026-12-31\",\n  \"branchId\": \"{{branchObjectId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/inventory/items",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "inventory", "items"]
+						}
+					}
+				},
+				{
+					"name": "Get Items",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/inventory/items",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "inventory", "items"]
+						}
+					}
+				},
+				{
+					"name": "Update Item",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"quantity\": 150,\n  \"unitPrice\": 1.75\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/inventory/items/{{inventoryItemId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "inventory", "items", "{{inventoryItemId}}"]
+						}
+					}
+				},
+				{
+					"name": "Delete Item",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/inventory/items/{{inventoryItemId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "inventory", "items", "{{inventoryItemId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Alerts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/inventory/alerts",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "inventory", "alerts"]
+						}
+					}
+				},
+				{
+					"name": "Send Alerts",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/inventory/alerts/send",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "inventory", "alerts", "send"]
+						}
+					}
+				},
+				{
+					"name": "Inventory Reports",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/inventory/reports",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "inventory", "reports"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Employee Management",
+			"item": [
+				{
+					"name": "Create Employee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"{{userObjectId}}\",\n  \"designation\": \"Lab Technician\",\n  \"department\": \"Laboratory\",\n  \"joiningDate\": \"2025-09-11\",\n  \"salary\": 35000,\n  \"branchId\": \"{{branchObjectId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/employees",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "employees"]
+						}
+					}
+				},
+				{
+					"name": "Get Employees",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/employees",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "employees"]
+						}
+					}
+				},
+				{
+					"name": "Employee Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/employees/{{employeeObjectId}}/details",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "employees", "{{employeeObjectId}}", "details"]
+						}
+					}
+				},
+				{
+					"name": "Create Task",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"employeeId\": \"{{employeeId}}\",\n  \"title\": \"Equipment Calibration\",\n  \"description\": \"Calibrate lab equipment monthly\",\n  \"dueDate\": \"2025-09-20\",\n  \"branchId\": \"{{branchObjectId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/employees/tasks",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "employees", "tasks"]
+						}
+					}
+				},
+				{
+					"name": "Update Task",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"COMPLETED\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/employees/{{employeeObjectId}}/tasks",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "employees", "{{employeeObjectId}}", "tasks"]
+						}
+					}
+				},
+				{
+					"name": "Create Leave",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"employeeId\": \"{{employeeId}}\",\n  \"leaveType\": \"SICK_LEAVE\",\n  \"fromDate\": \"2025-09-25\",\n  \"toDate\": \"2025-09-26\",\n  \"reason\": \"Medical appointment\",\n  \"branchId\": \"{{branchObjectId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/employees/leaves",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "employees", "leaves"]
+						}
+					}
+				},
+				{
+					"name": "Update Leave",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"APPROVED\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/employees/{{employeeObjectId}}/leaves",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "employees", "{{employeeObjectId}}", "leaves"]
+						}
+					}
+				},
+				{
+					"name": "Create Complaint",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"employeeId\": \"{{employeeId}}\",\n  \"subject\": \"Equipment Issue\",\n  \"description\": \"Lab equipment malfunctioning\",\n  \"branchId\": \"{{branchObjectId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/employees/complaints",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "employees", "complaints"]
+						}
+					}
+				},
+				{
+					"name": "Update Complaint",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"RESOLVED\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/employees/{{employeeObjectId}}/complaints",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "employees", "{{employeeObjectId}}", "complaints"]
+						}
+					}
+				},
+				{
+					"name": "Employee Dashboard",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/employees/dashboard",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "employees", "dashboard"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Expense Management",
+			"item": [
+				{
+					"name": "Create Expense",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Office Supplies\",\n  \"description\": \"Paper, pens, and other stationery\",\n  \"amount\": 1200,\n  \"category\": \"OFFICE_SUPPLIES\",\n  \"date\": \"2025-09-11\",\n  \"branchId\": \"{{branchObjectId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/expenses",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "expenses"]
+						}
+					}
+				},
+				{
+					"name": "Get Expenses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/expenses",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "expenses"]
+						}
+					}
+				},
+				{
+					"name": "Expense Summary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/expenses/summary",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "expenses", "summary"]
+						}
+					}
+				},
+				{
+					"name": "Get Expense Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/expenses/{{expenseObjectId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "expenses", "{{expenseObjectId}}"]
+						}
+					}
+				},
+				{
+					"name": "Update Expense",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Office Supplies - Updated\",\n  \"amount\": 1350\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/expenses/{{expenseObjectId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "expenses", "{{expenseObjectId}}"]
+						}
+					}
+				},
+				{
+					"name": "Delete Expense",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/expenses/{{expenseObjectId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "expenses", "{{expenseObjectId}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "QR Code Report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/reports/qr/{{orderId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "reports", "qr", "{{orderId}}"]
+						}
+					}
+				},
+				{
+					"name": "Download Report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/reports/download/{{reportId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "reports", "download", "{{reportId}}"]
+						}
+					}
+				},
+				{
+					"name": "Revenue Report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/reports/revenue",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "reports", "revenue"]
+						}
+					}
+				},
+				{
+					"name": "Commission Report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/reports/commissions",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "reports", "commissions"]
+						}
+					}
+				},
+				{
+					"name": "Daily Collection",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/reports/daily-collection",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "reports", "daily-collection"]
+						}
+					}
+				},
+				{
+					"name": "Payment Summary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/reports/payment-summary",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "reports", "payment-summary"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/health",
+					"host": ["{{baseUrl}}"],
+					"path": ["health"]
+				}
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000"
+		}
+	]
+}
