@@ -14,10 +14,5 @@
   ],
   "env": {
     "NODE_ENV": "production"
-  },
-  "functions": {
-    "src/app.ts": {
-      "maxDuration": 30
-    }
   }
 }
