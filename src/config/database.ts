@@ -9,12 +9,10 @@ const connectDB = async (): Promise<void> => {
       throw new Error('MONGODB_URI is not defined in environment variables');
     }
 
-    // Serverless-optimized connection options
+    // Render-optimized connection options
     const options = {
       serverSelectionTimeoutMS: 30000, // 30 seconds
       socketTimeoutMS: 45000, // 45 seconds
-      bufferCommands: false,
-      bufferMaxEntries: 0,
       maxPoolSize: 10,
       minPoolSize: 1,
       maxIdleTimeMS: 30000,
