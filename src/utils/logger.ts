@@ -10,19 +10,21 @@ const logger = winston.createLogger({
     winston.format.json()
   ),
   defaultMeta: { service: 'heal-diagnostic-api' },
-  transports: [
-    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'logs/combined.log' })
-  ]
+  transports: []
 });
 
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(new winston.transports.Console({
-    format: winston.format.combine(
-      winston.format.colorize(),
-      winston.format.simple()
-    )
-  }));
+// Use console transport for both development and production in serverless environments
+logger.add(new winston.transports.Console({
+  format: winston.format.combine(
+    winston.format.colorize(),
+    winston.format.simple()
+  )
+}));
+
+// Only add file transports in non-serverless environments
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+  logger.add(new winston.transports.File({ filename: 'logs/error.log', level: 'error' }));
+  logger.add(new winston.transports.File({ filename: 'logs/combined.log' }));
 }
 
 export { logger };
